@@ -48,21 +48,18 @@ class Pizza(models.Model):
 				    decimal_places=2, 
 				    default=5.00)
 
-    def set_size(size):
-	if size == 'Small':
-	    self.size = size
+    def save(self, *args, **kwargs):
+	if size == 'S':
 	    self.base_price = 5.00
-	elif size == 'Medium':
-	    self.size = size
-	    self.base_price = 6.00
-	elif size == 'Large':
-	    self.size = size
-	    self.base_price = 7.00
-	elif size == 'Extra Large':
-	    self.size = size
+	elif size == 'M':
 	    self.base_price = 8.00
+	elif size == 'L':
+	    self.base_price = 11.00
+	elif size == 'XL':
+	    self.base_price = 14.00
 	else:
-	    pass
+	    return ValueError, "Invalid size."
+	super(Pizza, self).save(*args, **kwargs)
 
 class Bread(models.Model):
     type = models.CharField(max_length=8, choices=BREAD_CHOICES)
@@ -86,6 +83,16 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=6, 
 				decimal_places=2, 
 				default=0.00)
+
+    def save(self, *args, **kwargs):
+	for pizza in pizzas.all():
+	    subtotal += pizza.base_price
+	for bread in breads.all():
+	    subtotal += bread.base_price
+	self.tax = 0.06 * subtotal
+	self.subtotal = subtotal
+	self.total = subtotal + tax
+	super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):
 	return str(self.id)

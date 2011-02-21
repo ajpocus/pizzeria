@@ -19,13 +19,16 @@
 	    <h2>Your Order</h2>
 	    {% for order in order_list.all %}
 		{% for pizza in order.pizzas.all %}
-		    <p class="pizza"><strong>{{ pizza.size }} Pizza</strong><p>
+		    <p class="pizza"><strong>{{ pizza.size }} Pizza</strong></p>
+		    <span class="price">{{ pizza.base_price }}</span>
 		    {% for topping in pizza.toppings.all %}
-			<p class = "topping">{{ topping }}</p>
+			<p class="topping">{{ topping }}</p>
+			<span class="price">{{ topping.price }}</span>
 		    {% endfor %}
 		{% endfor %}
 		{% for bread in order.breads.all %}
 		    <p class="bread">{{ bread.type }} Bread</p>
+		    <span class="price">{{ bread.base_price }}</span>
 		{% endfor %}
 	    {% endfor %}
 	{% endblock %}
