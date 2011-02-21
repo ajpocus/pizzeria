@@ -10,10 +10,13 @@
 {% for order in order_list.all %}
 	{% for pizza in order.pizzas.all %}
 	    <div class="order">
+		<form action="" method="POST">{% csrf_token %}
 		<p>{{ pizza.size }} Pizza</p>
 		{% for topping in pizza.toppings.all %}
 		    <p>{{ topping.name }}</p>
 		{% endfor %}
+		<input type="submit" name="Clear" value="{{ order.id }}" />
+		</form>
 	    </div>
 	{% endfor %}
 {% endfor %}
