@@ -1,0 +1,27 @@
+#recipt {
+    float: left;
+    width: 10em;
+    border: 2px solid green;
+    padding: 0.5em;
+    margin: 1em;
+}
+
+#categories {
+    float: top;
+}
+
+#menu {
+    float: left;
+    border: 2px solid blue;
+    padding: 1em;
+    margin: 1em;
+}
+    
+.pizza {
+    margin-bottom: 2px;
+}
+
+.topping {
+    position: relative;
+    left: 1em;
+}

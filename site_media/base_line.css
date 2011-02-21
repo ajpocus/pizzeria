@@ -1,0 +1,8 @@
+.order {
+    float: bottom, left;
+    width: 12em;
+    border: 2px dashed blue;
+    padding: 0.5em;
+    margin: 1em;
+}
+

@@ -1,0 +1,37 @@
+README for Pizzeria, a Django project
+
+SUMMARY
+
+	Pizzeria is a group of Django apps for placing and viewing orders in a
+    pizza restaurant. There are currently two apps, order and line, which place
+    and show orders, respectively.
+
+REQUIREMENTS
+
+	Pizzeria was built using Django 1.2.5, Python 2.7.1, and 
+    django-debug-toolbar 0.8.4. Most Unix-based systems come with Python pre-
+    installed, although you may need to use the python2 executable if your
+    distro uses python3. Most distros should also have a Django package. As for
+    django-debug-toolbar, you can install it with pip, as in:
+
+    sudo pip install django-debug-toolbar
+
+    If you don't have pip, there are packages available.
+
+USAGE
+
+	From the root project directory, you can run:
+
+    python manage.py runserver
+
+    to start the Django development server. It's bare-bones right now, but apps
+    are available at localhost:8000/order and /line. The order app provides
+    a basic order and recipt interface, while the line shows order not yet
+    made. An interface to clear orders is yet to come on the line app.
+
+AUTHORS
+
+	Pizzeria was created by Austin Pocus, Copyright 2011. It is released 
+    under the BSD license; details may be found in LICENSE.
+
+    

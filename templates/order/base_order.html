@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/site_media/base_order.css" />
+    <title>{% block title %}Order{% endblock %}</title>
+</head>
+
+<body>
+    <h1>Order</h1>
+    <div id="recipt">
+	{% block recipt %}
+	    <h2>Customer</h2>
+	    {% if customer %}
+		{{ customer.name }} <br />
+		{{ customer.number }} <br />
+	    {% endif %}
+	    <h2>Your Order</h2>
+	    {% for order in order_list.all %}
+		{% for pizza in order.pizzas.all %}
+		    <p class="pizza"><strong>{{ pizza.size }} Pizza</strong><p>
+		    {% for topping in pizza.toppings.all %}
+			<p class = "topping">{{ topping }}</p>
+		    {% endfor %}
+		{% endfor %}
+		{% for bread in order.breads.all %}
+		    <p class="bread">{{ bread.type }} Bread</p>
+		{% endfor %}
+	    {% endfor %}
+	{% endblock %}
+    </div>
+
+    <div id="menu">
+	<div id="categories">
+	    {% block categories %}
+		<h3>Menu</h3>
+		<a href="/order/pizza/{{ order.id }}">Pizza</a>
+		<a href="/order/bread/{{ order.id }}">Bread</a>
+	    {% endblock %}
+	</div>
+
+	{% block menu %}
+	{% endblock %}	
+    </div>
+</body>
+

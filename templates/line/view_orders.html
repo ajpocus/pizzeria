@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/site_media/base_line.css" />
+{% block title %}<title>Line</title>{% endblock %}
+</head>
+
+<body>
+{% for order in order_list.all %}
+	{% for pizza in order.pizzas.all %}
+	    <div class="order">
+		<p>{{ pizza.size }} Pizza</p>
+		{% for topping in pizza.toppings.all %}
+		    <p>{{ topping.name }}</p>
+		{% endfor %}
+	    </div>
+	{% endfor %}
+{% endfor %}
+</body>
+</html>

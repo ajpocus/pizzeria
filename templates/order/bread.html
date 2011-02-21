@@ -1,0 +1,12 @@
+{% extends "order/base_order.html" %}
+
+{% block title %}Order Bread{% endblock %}
+
+{% block menu %}
+    <form action="#" method="post">{% csrf_token %}
+	{{ block.super }}
+	{{ form.as_p }}
+    <input type="submit" name="update" value="Update" />
+    </form>
+{% endblock %}
+
