@@ -26,6 +26,7 @@ def order_pizza(request, order_id):
 		pizza.toppings.add(topping)
 
 	    order.pizzas.add(pizza)
+	    order.save()
 	    url = '/order/pizza/' + str(order_id)
 	    redirect(url)
     else:

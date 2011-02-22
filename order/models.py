@@ -88,13 +88,14 @@ class Order(models.Model):
 	if not Order.objects.filter(id=self.id):
 	    super(Order, self).save(*args, **kwargs)
 	else:
+	    subtotal = 0
 	    for pizza in self.pizzas.all():
 		subtotal += pizza.base_price
 	    for bread in self.breads.all():
 		subtotal += bread.base_price
-	    self.tax = 0.06 * subtotal
+	    self.tax = 0.06 * float(subtotal)
 	    self.subtotal = subtotal
-	    self.total = subtotal + tax
+	    self.total = float(self.subtotal) + self.tax
 	    super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):
