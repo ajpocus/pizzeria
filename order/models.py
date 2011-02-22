@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm, CheckboxSelectMultiple, RadioSelect
+from decimal import Decimal
 
 SIZE_CHOICES = (
     ('S', 'Small'), 
@@ -30,7 +31,7 @@ class Customer(models.Model):
 
 class Topping(models.Model):
     name = models.CharField(max_length=24)
-    price = models.DecimalField(max_digits=4,
+    base_price = models.DecimalField(max_digits=4,
 				decimal_places=2,
 				default=0.99)
 
@@ -50,13 +51,13 @@ class Pizza(models.Model):
 
     def save(self, *args, **kwargs):
 	if self.size == 'S':
-	    self.base_price = 5.00
+	    self.base_price = Decimal('5.00')
 	elif self.size == 'M':
-	    self.base_price = 8.00
+	    self.base_price = Decimal('8.00')
 	elif self.size == 'L':
-	    self.base_price = 11.00
+	    self.base_price = Decimal('11.00')
 	elif self.size == 'XL':
-	    self.base_price = 14.00
+	    self.base_price = Decimal('14.00')
 	else:
 	    return ValueError, "Invalid size."
 	super(Pizza, self).save(*args, **kwargs)
@@ -88,14 +89,17 @@ class Order(models.Model):
 	if not Order.objects.filter(id=self.id):
 	    super(Order, self).save(*args, **kwargs)
 	else:
-	    subtotal = 0
+	    self.subtotal = Decimal('0.00')
 	    for pizza in self.pizzas.all():
-		subtotal += pizza.base_price
+		self.subtotal += pizza.base_price
+		for topping in pizza.toppings.all():
+		    self.subtotal += topping.base_price
+
 	    for bread in self.breads.all():
-		subtotal += bread.base_price
-	    self.tax = 0.06 * float(subtotal)
-	    self.subtotal = subtotal
-	    self.total = float(self.subtotal) + self.tax
+		self.subtotal += bread.base_price
+
+	    self.tax = Decimal('0.06') * self.subtotal
+	    self.total = self.subtotal + self.tax
 	    super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):

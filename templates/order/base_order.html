@@ -23,7 +23,7 @@
 		    <span class="price">{{ pizza.base_price }}</span>
 		    {% for topping in pizza.toppings.all %}
 			<p class="topping">{{ topping }}</p>
-			<span class="price">{{ topping.price }}</span>
+			<span class="price">{{ topping.base_price }}</span>
 		    {% endfor %}
 		{% endfor %}
 		{% for bread in order.breads.all %}
