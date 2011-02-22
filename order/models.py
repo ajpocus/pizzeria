@@ -49,13 +49,13 @@ class Pizza(models.Model):
 				    default=5.00)
 
     def save(self, *args, **kwargs):
-	if size == 'S':
+	if self.size == 'S':
 	    self.base_price = 5.00
-	elif size == 'M':
+	elif self.size == 'M':
 	    self.base_price = 8.00
-	elif size == 'L':
+	elif self.size == 'L':
 	    self.base_price = 11.00
-	elif size == 'XL':
+	elif self.size == 'XL':
 	    self.base_price = 14.00
 	else:
 	    return ValueError, "Invalid size."
@@ -85,14 +85,17 @@ class Order(models.Model):
 				default=0.00)
 
     def save(self, *args, **kwargs):
-	for pizza in pizzas.all():
-	    subtotal += pizza.base_price
-	for bread in breads.all():
-	    subtotal += bread.base_price
-	self.tax = 0.06 * subtotal
-	self.subtotal = subtotal
-	self.total = subtotal + tax
-	super(Order, self).save(*args, **kwargs)
+	if not Order.objects.filter(id=self.id):
+	    super(Order, self).save(*args, **kwargs)
+	else:
+	    for pizza in self.pizzas.all():
+		subtotal += pizza.base_price
+	    for bread in self.breads.all():
+		subtotal += bread.base_price
+	    self.tax = 0.06 * subtotal
+	    self.subtotal = subtotal
+	    self.total = subtotal + tax
+	    super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):
 	return str(self.id)

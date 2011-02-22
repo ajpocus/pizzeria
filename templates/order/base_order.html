@@ -30,6 +30,9 @@
 		    <p class="bread">{{ bread.type }} Bread</p>
 		    <span class="price">{{ bread.base_price }}</span>
 		{% endfor %}
+		<p>Subtotal</p><span class="price">{{ order.subtotal }}</span>
+		<p>Tax</p><span class="price">{{ order.tax }}</span>
+		<p>Total</p><span class="price">{{ order.total }}</span>
 	    {% endfor %}
 	{% endblock %}
     </div>
