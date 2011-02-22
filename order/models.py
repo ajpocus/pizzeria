@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm, CheckboxSelectMultiple, RadioSelect
+import decimal
 from decimal import Decimal
 
 SIZE_CHOICES = (
@@ -80,7 +81,9 @@ class Order(models.Model):
     subtotal = models.DecimalField(max_digits=6, 
 				decimal_places=2,
 				default=0.00)
-    tax = models.IntegerField(default=6)
+    tax = models.DecimalField(max_digits=6,
+			    decimal_places=2,
+			    default=0.00)
     total = models.DecimalField(max_digits=6, 
 				decimal_places=2, 
 				default=0.00)
@@ -89,7 +92,9 @@ class Order(models.Model):
 	if not Order.objects.filter(id=self.id):
 	    super(Order, self).save(*args, **kwargs)
 	else:
+	    decimal.getcontext().prec = 2
 	    self.subtotal = Decimal('0.00')
+
 	    for pizza in self.pizzas.all():
 		self.subtotal += pizza.base_price
 		for topping in pizza.toppings.all():
