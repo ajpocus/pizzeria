@@ -19,35 +19,50 @@
 	    <h2>Your Order</h2>
 	    {% for order in order_list.all %}
 		{% for pizza in order.pizzas.all %}
-		    <p class="pizza"><strong>{{ pizza.size }} Pizza</strong></p>
-		    <span class="price">
-		    {{ pizza.base_price|stringformat:".2f" }}
+		    <p class="item">
+		    <span class="pizza">
+			<strong>{{ pizza.size }} Pizza</strong>
 		    </span>
+		    <span class="price">
+			{{ pizza.base_price|stringformat:".2f" }}
+		    </span>
+		    </p>
+		    
 		    {% for topping in pizza.toppings.all %}
-			<p class="topping">{{ topping }}</p>
+			<p class="item">
+			<span class="topping">{{ topping }}</span>
 			<span class="price">
-			{{ topping.base_price|stringformat:".2f" }}
+			    {{ topping.base_price|stringformat:".2f" }}
 			</span>
+			</p>
 		    {% endfor %}
 		{% endfor %}
 		{% for bread in order.breads.all %}
-		    <p class="bread">{{ bread.type }} Bread</p>
+		    <p class="item">
+		    <span class="bread">{{ bread.type }} Bread</span>
 		    <span class="price">
-		    {{ bread.base_price|stringformat:".2f" }}
+			{{ bread.base_price|stringformat:".2f" }}
 		    </span>
+		    </p>
 		{% endfor %}
-		<p>Subtotal</p>
+		<p class="item">
+		<span class="total">Subtotal</span>
 		<span class="price">
-		{{ order.subtotal|stringformat:".2f" }}
+		    {{ order.subtotal|stringformat:".2f" }}
 		</span>
-		<p>Tax</p>
+		</p>
+		<p class="item">
+		<span class="total">Tax</span>
 		<span class="price">
-		{{ order.tax|stringformat:".2f" }}
+		    {{ order.tax|stringformat:".2f" }}
 		</span>
-		<p>Total</p>
+		</p>
+		<p class="item">
+		<span class="total">Total</span>
 		<span class="price">
-		{{ order.total|stringformat:".2f" }}
+		    {{ order.total|stringformat:".2f" }}
 		</span>
+		</p>
 	    {% endfor %}
 	{% endblock %}
     </div>

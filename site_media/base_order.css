@@ -16,12 +16,21 @@
     padding: 1em;
     margin: 1em;
 }
-    
+
 .pizza {
-    margin-bottom: 2px;
+    margin: 0.5em;
 }
 
 .topping {
     position: relative;
     left: 1em;
+}
+
+.item {
+    position: relative;
+}
+
+.price {
+    position: absolute;
+    right: 0.1em;
 }
