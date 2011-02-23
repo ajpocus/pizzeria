@@ -107,3 +107,7 @@ INSTALLED_APPS = (
     'line',
     'debug_toolbar',
 )
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+}

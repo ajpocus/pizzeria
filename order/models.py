@@ -92,8 +92,8 @@ class Order(models.Model):
 	if not Order.objects.filter(id=self.id):
 	    super(Order, self).save(*args, **kwargs)
 	else:
-	    decimal.getcontext().prec = 2
-	    self.subtotal = Decimal('0.00')
+	    decimal.getcontext().rounding = decimal.ROUND_HALF_EVEN
+	    self.subtotal = +Decimal('0.00')
 
 	    for pizza in self.pizzas.all():
 		self.subtotal += pizza.base_price
@@ -103,8 +103,11 @@ class Order(models.Model):
 	    for bread in self.breads.all():
 		self.subtotal += bread.base_price
 
-	    self.tax = Decimal('0.06') * self.subtotal
+	    self.tax = +Decimal('0.06') * self.subtotal
 	    self.total = self.subtotal + self.tax
+	    self.subtotal = self.subtotal.quantize(Decimal('0.01'))
+	    self.tax = self.tax.quantize(Decimal('0.01'))
+	    self.total = self.total.quantize(Decimal('0.01'))
 	    super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):

@@ -20,19 +20,34 @@
 	    {% for order in order_list.all %}
 		{% for pizza in order.pizzas.all %}
 		    <p class="pizza"><strong>{{ pizza.size }} Pizza</strong></p>
-		    <span class="price">{{ pizza.base_price }}</span>
+		    <span class="price">
+		    {{ pizza.base_price|stringformat:".2f" }}
+		    </span>
 		    {% for topping in pizza.toppings.all %}
 			<p class="topping">{{ topping }}</p>
-			<span class="price">{{ topping.base_price }}</span>
+			<span class="price">
+			{{ topping.base_price|stringformat:".2f" }}
+			</span>
 		    {% endfor %}
 		{% endfor %}
 		{% for bread in order.breads.all %}
 		    <p class="bread">{{ bread.type }} Bread</p>
-		    <span class="price">{{ bread.base_price }}</span>
+		    <span class="price">
+		    {{ bread.base_price|stringformat:".2f" }}
+		    </span>
 		{% endfor %}
-		<p>Subtotal</p><span class="price">{{ order.subtotal }}</span>
-		<p>Tax</p><span class="price">{{ order.tax }}</span>
-		<p>Total</p><span class="price">{{ order.total }}</span>
+		<p>Subtotal</p>
+		<span class="price">
+		{{ order.subtotal|stringformat:".2f" }}
+		</span>
+		<p>Tax</p>
+		<span class="price">
+		{{ order.tax|stringformat:".2f" }}
+		</span>
+		<p>Total</p>
+		<span class="price">
+		{{ order.total|stringformat:".2f" }}
+		</span>
 	    {% endfor %}
 	{% endblock %}
     </div>
