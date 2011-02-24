@@ -5,8 +5,13 @@
 {% block menu %}
     <form action="#" method="post">{% csrf_token %}
 	{{ block.super }}
-	{{ form.as_p }}
-    <input type="submit" name="update" value="Update" />
+	{% for field in pizza_form %}
+	    <div class="form_field">
+		{{ field.errors }}
+		{{ field.label_tag }}: {{ field }}
+	    </div>
+	{% endfor %}
+    <input type="submit" name="pizza" value="Update" />
     </form>
 {% endblock %}
 

@@ -3,10 +3,10 @@
 {% block title %}Order Bread{% endblock %}
 
 {% block menu %}
-    <form action="#" method="post">{% csrf_token %}
+    <form name="bread" value="bread" action="#" method="post">{% csrf_token %}
 	{{ block.super }}
 	{{ form.as_p }}
-    <input type="submit" name="update" value="Update" />
+    <input type="submit" name="bread" value="Update" />
     </form>
 {% endblock %}
 

@@ -118,7 +118,7 @@ class PizzaForm(ModelForm):
 	model = Pizza
 	fields = ('size', 'toppings', 'crust')
 	widgets = {
-	    'toppings': CheckboxSelectMultiple(),	
+	    'toppings': CheckboxSelectMultiple(),
 	}
 
 class BreadForm(ModelForm):
@@ -129,4 +129,7 @@ class BreadForm(ModelForm):
 	    'type': RadioSelect(),
 	}
 
+class CustomerForm(ModelForm):
+    class Meta:
+	model = Customer
 

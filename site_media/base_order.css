@@ -1,36 +1,74 @@
+body {
+    font-family: Georgia, serif;
+}
+
 #recipt {
+    position: relative;
     float: left;
-    width: 10em;
+    width: 20%;
     border: 2px solid green;
     padding: 0.5em;
     margin: 1em;
+    background: #004C1A;
+    color: #4C2E00;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 
-#categories {
-    float: top;
+#recipt .pizza, #recipt .bread {
+    background: #80DC80;
+    position: relative;   
+    border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 
-#menu {
-    float: left;
-    border: 2px solid blue;
-    padding: 1em;
-    margin: 1em;
-}
-
-.pizza {
-    margin: 0.5em;
-}
-
-.topping {
+#recipt .topping {
     position: relative;
     left: 1em;
 }
 
-.item {
-    position: relative;
+#recipt .item {
+    background: #80DC80;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
 }
 
-.price {
+#recipt .price {
     position: absolute;
-    right: 0.1em;
+    right: 7px;
+    padding: 0em 0.5em;
 }
+
+#customer {
+    background: #80DC80;
+}
+
+#categories {
+    float: top;
+    background: #8DA9FF;
+    color: #4C2E00;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+#menu {
+    float: left;
+    width: 70%;
+    border: 2px solid blue;
+    padding: 1em;
+    margin: 1em;
+    background: #0000CC;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+}
+
+#menu p, #menu ul {
+    background: #8DA9FF;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+#menu .form_field {
+    background: #80DC80;
+}
+

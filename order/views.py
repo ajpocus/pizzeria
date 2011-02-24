@@ -1,7 +1,8 @@
 import datetime
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.generic import list_detail
-from order.models import Customer, Order, Pizza, Bread, PizzaForm, BreadForm
+from order.models import Customer, Order, Pizza, Bread
+from order.models import PizzaForm, BreadForm, CustomerForm
 
 def place_order(request):
     c = Customer.objects.create()
@@ -14,23 +15,42 @@ def order_pizza(request, order_id):
     order = get_object_or_404(Order, id=order_id)
 
     if request.method == 'POST':
-	form = PizzaForm(request.POST)
-	if form.is_valid():
-	    data = form.cleaned_data
-	    size = str(data['size'])
-	    crust = str(data['crust'])
-	    toppings = data['toppings']
+	if 'pizza' in request.POST and request.POST['pizza'] == 'Update':
+	    pizza_form = PizzaForm(request.POST)
+	    if pizza_form.is_valid():
+		data = pizza_form.cleaned_data
+		size = str(data['size'])
+		crust = str(data['crust'])
+		toppings = data['toppings']
 
-	    pizza = Pizza.objects.create(size=size, crust=crust)
-	    for topping in toppings:
-		pizza.toppings.add(topping)
+		pizza = Pizza.objects.create(size=size, crust=crust)
+		for topping in toppings:
+		    pizza.toppings.add(topping)
 
-	    order.pizzas.add(pizza)
-	    order.save()
-	    url = '/order/pizza/' + str(order_id)
-	    redirect(url)
+		order.pizzas.add(pizza)
+		order.save()
+		url = '/order/pizza/' + str(order_id)
+		return redirect(url)
+	    
+	else:
+	    pizza_form = PizzaForm()
+
+	if 'customer' in request.POST and request.POST['customer'] == 'Update':
+	    customer_form = CustomerForm(request.POST)
+	    if customer_form.is_valid():
+		data = customer_form.cleaned_data
+		name = str(data['name'])
+		number = str(data['number'])
+		customer = Customer.objects.create(name=name, number=number)
+		order.customer = customer
+		order.save()
+		url = '/order/pizza/' + str(order_id)
+		return redirect(url)	
+        else:
+	    customer_form = CustomerForm()
     else:
-	form = PizzaForm()
+	pizza_form = PizzaForm()
+	customer_form = CustomerForm()
 
     return list_detail.object_list(
 	request,
@@ -38,7 +58,8 @@ def order_pizza(request, order_id):
 	template_name = "order/pizza.html",
 	template_object_name = "order",
 	extra_context = {
-	    "form": form,
+	    "pizza_form": pizza_form,
+	    "customer_form": customer_form,
 	    "order": order,
 	},
     )
@@ -53,7 +74,7 @@ def order_bread(request, order_id):
 	    bread = Bread.objects.create(type=type)
 	    order.breads.add(bread)
 	    url = '/order/bread/' + str(order_id)
-	    redirect(url)
+	    return redirect(url)
     else:
 	form = BreadForm()
 
@@ -63,7 +84,8 @@ def order_bread(request, order_id):
 	template_name = "order/bread.html",
 	template_object_name = "order",
 	extra_context = {
-	    "form": form,
+	    "bread_form": bread_form,
+	    "customer_form": customer_form,
 	    "order": order,
 	}
     )

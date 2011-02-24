@@ -8,19 +8,26 @@
 </head>
 
 <body>
-    <h1>Order</h1>
-    <div id="recipt">
-	{% block recipt %}
+<h1>Order</h1>
+<div id="recipt">
+    {% block recipt %}
+	<div id="customer">
 	    <h2>Customer</h2>
 	    {% if customer %}
 		{{ customer.name }} <br />
 		{{ customer.number }} <br />
 	    {% endif %}
-	    <h2>Your Order</h2>
-	    {% for order in order_list.all %}
-		{% for pizza in order.pizzas.all %}
+	    <form action="#" method="POST">{% csrf_token %}
+		{{ customer_form.as_p }}
+		<input type="submit" name="customer" value="Update">
+	    </form>
+	</div>
+	<h2>Your Order</h2>
+	{% for order in order_list.all %}
+	    {% for pizza in order.pizzas.all %}
+		<div class="pizza">
 		    <p class="item">
-		    <span class="pizza">
+		    <span class="size">
 			<strong>{{ pizza.size }} Pizza</strong>
 		    </span>
 		    <span class="price">
@@ -36,48 +43,52 @@
 			</span>
 			</p>
 		    {% endfor %}
-		{% endfor %}
-		{% for bread in order.breads.all %}
+		</div>
+	    {% endfor %}
+	    {% for bread in order.breads.all %}
+		<div class="bread">
 		    <p class="item">
-		    <span class="bread">{{ bread.type }} Bread</span>
+		    <span class="type">{{ bread.type }} Bread</span>
 		    <span class="price">
 			{{ bread.base_price|stringformat:".2f" }}
 		    </span>
 		    </p>
-		{% endfor %}
-		<p class="item">
+		</div>
+	    {% endfor %}
+	    <p class="item">
 		<span class="total">Subtotal</span>
 		<span class="price">
 		    {{ order.subtotal|stringformat:".2f" }}
 		</span>
-		</p>
-		<p class="item">
+	    </p>
+	    <p class="item">
 		<span class="total">Tax</span>
 		<span class="price">
 		    {{ order.tax|stringformat:".2f" }}
 		</span>
-		</p>
-		<p class="item">
+	    </p>
+	    <p class="item">
 		<span class="total">Total</span>
 		<span class="price">
 		    {{ order.total|stringformat:".2f" }}
 		</span>
-		</p>
-	    {% endfor %}
+	    </p>
+	{% endfor %}
+    {% endblock %}
+</div>
+
+<div id="menu">
+    <div id="categories">
+	{% block categories %}
+	    <h3>Menu</h3>
+	    <a href="/order/pizza/{{ order.id }}">Pizza</a>
+	    <a href="/order/bread/{{ order.id }}">Bread</a>
 	{% endblock %}
     </div>
 
-    <div id="menu">
-	<div id="categories">
-	    {% block categories %}
-		<h3>Menu</h3>
-		<a href="/order/pizza/{{ order.id }}">Pizza</a>
-		<a href="/order/bread/{{ order.id }}">Bread</a>
-	    {% endblock %}
-	</div>
+    {% block menu %}
+    {% endblock %}	
+</div>
 
-	{% block menu %}
-	{% endblock %}	
-    </div>
 </body>
 
