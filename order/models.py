@@ -29,7 +29,6 @@ class Customer(models.Model):
     def __unicode__(self):
 	return self.name
 
-
 class Topping(models.Model):
     name = models.CharField(max_length=24)
     base_price = models.DecimalField(max_digits=4,
@@ -93,7 +92,7 @@ class Order(models.Model):
 	    super(Order, self).save(*args, **kwargs)
 	else:
 	    decimal.getcontext().rounding = decimal.ROUND_HALF_EVEN
-	    self.subtotal = +Decimal('0.00')
+	    self.subtotal = Decimal('0.00')
 
 	    for pizza in self.pizzas.all():
 		self.subtotal += pizza.base_price
@@ -103,7 +102,7 @@ class Order(models.Model):
 	    for bread in self.breads.all():
 		self.subtotal += bread.base_price
 
-	    self.tax = +Decimal('0.06') * self.subtotal
+	    self.tax = Decimal('0.06') * self.subtotal
 	    self.total = self.subtotal + self.tax
 	    self.subtotal = self.subtotal.quantize(Decimal('0.01'))
 	    self.tax = self.tax.quantize(Decimal('0.01'))
@@ -118,6 +117,7 @@ class PizzaForm(ModelForm):
 	model = Pizza
 	fields = ('size', 'toppings', 'crust')
 	widgets = {
+	    'crust': RadioSelect(),
 	    'toppings': CheckboxSelectMultiple(),
 	}
 

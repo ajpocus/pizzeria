@@ -1,5 +1,6 @@
 body {
     font-family: Georgia, serif;
+    background-color: #999999;
 }
 
 #recipt {
@@ -28,6 +29,7 @@ body {
 }
 
 #recipt .item {
+    position: relative;
     background: #80DC80;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -69,6 +71,10 @@ body {
 }
 
 #menu .form_field {
-    background: #80DC80;
+    background: #8DA9FF;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    margin: 1em 0em;
+    padding: 0.5em 0em;
 }
 
