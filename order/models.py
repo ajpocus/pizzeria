@@ -112,24 +112,3 @@ class Order(models.Model):
     def __unicode__(self):
 	return str(self.id)
 
-class PizzaForm(ModelForm):
-    class Meta:
-	model = Pizza
-	fields = ('size', 'toppings', 'crust')
-	widgets = {
-	    'crust': RadioSelect(),
-	    'toppings': CheckboxSelectMultiple(),
-	}
-
-class BreadForm(ModelForm):
-    class Meta:
-	model = Bread
-	fields = ('type',)
-	widgets = {
-	    'type': RadioSelect(),
-	}
-
-class CustomerForm(ModelForm):
-    class Meta:
-	model = Customer
-
