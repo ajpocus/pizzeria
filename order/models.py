@@ -29,14 +29,26 @@ class Customer(models.Model):
     def __unicode__(self):
 	return self.name
 
-class Topping(models.Model):
+class Size(models.Model):
     name = models.CharField(max_length=24)
     base_price = models.DecimalField(max_digits=4,
-				decimal_places=2,
-				default=0.99)
+		    decimal_places=2,
+		    default=0.00)
 
     def __unicode__(self):
 	return self.name
+
+class Topping(models.Model):
+    name = models.CharField(max_length=24)
+    base_price = models.DecimalField(max_digits=4,
+		    decimal_places=2,
+		    default=0.99)
+
+    def __unicode__(self):
+	return self.name
+
+class Crust(models.Model):
+    flavor = models.ForeignKey(Flavor)
 
 class Pizza(models.Model):
     size = models.CharField(max_length=6, choices=SIZE_CHOICES)
@@ -63,7 +75,7 @@ class Pizza(models.Model):
 	super(Pizza, self).save(*args, **kwargs)
 
 class Bread(models.Model):
-    type = models.CharField(max_length=8, choices=BREAD_CHOICES)
+    flavor = models.ForeignKey(Flavor)
     base_price = models.DecimalField(max_digits=4,
 				    decimal_places=2,
 				    default=4.00)
