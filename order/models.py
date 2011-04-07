@@ -1,30 +1,8 @@
-from django.db import models
-from django.forms import ModelForm, CheckboxSelectMultiple, RadioSelect
 import decimal
-from decimal import Decimal
+from django.db import models
 
-SIZE_CHOICES = (
-    ('S', 'Small'), 
-    ('M', 'Medium'), 
-    ('L', 'Large'), 
-    ('XL', 'Extra Large'),
-)
-
-CRUST_CHOICES = (
-    ('OG', 'Original'), 
-    ('GR', 'Garlic'), 
-    ('BT', 'Butter'),
-)
-
-BREAD_CHOICES = (
-    ('GR', 'Garlic'),
-    ('CN', 'Cinnamon'),
-    ('CJ', 'Cajun'),
-)
-    
-class Customer(models.Model):
-    name = models.CharField(max_length=64)
-    number = models.CharField(max_length=20)
+class Flavor(models.Model):
+    name = models.CharField(max_length=24)
 
     def __unicode__(self):
 	return self.name
@@ -47,16 +25,10 @@ class Topping(models.Model):
     def __unicode__(self):
 	return self.name
 
-class Crust(models.Model):
-    flavor = models.ForeignKey(Flavor)
-
 class Pizza(models.Model):
-    size = models.CharField(max_length=6, choices=SIZE_CHOICES)
+    size = models.ForeignKey(Size)
     toppings = models.ManyToManyField(Topping, blank=True)
-    crust = models.CharField(max_length=8,
-			    default='Original',
-			    blank=True,
-			    choices=CRUST_CHOICES)
+    crust = models.ForeignKey(Flavor)
     base_price = models.DecimalField(max_digits=4, 
 				    decimal_places=2, 
 				    default=5.00)
@@ -74,6 +46,12 @@ class Pizza(models.Model):
 	    return ValueError, "Invalid size."
 	super(Pizza, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+	name = self.size + " Pizza"
+	for topping in self.toppings.all():
+	    name = name + ", " + topping.name
+	return name
+
 class Bread(models.Model):
     flavor = models.ForeignKey(Flavor)
     base_price = models.DecimalField(max_digits=4,
@@ -82,6 +60,13 @@ class Bread(models.Model):
 
     def __unicode__(self):
 	return self.type
+
+class Customer(models.Model):
+    name = models.CharField(max_length=64)
+    number = models.CharField(max_length=20)
+
+    def __unicode__(self):
+	return self.name
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer)
@@ -104,6 +89,7 @@ class Order(models.Model):
 	    super(Order, self).save(*args, **kwargs)
 	else:
 	    decimal.getcontext().rounding = decimal.ROUND_HALF_EVEN
+	    Decimal = decimal.Decimal
 	    self.subtotal = Decimal('0.00')
 
 	    for pizza in self.pizzas.all():

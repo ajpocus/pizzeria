@@ -6,6 +6,7 @@ class PizzaForm(forms.ModelForm):
         model = Pizza
         fields = ('size', 'toppings', 'crust')
         widgets = {
+	    'size': forms.RadioSelect(),
             'crust': forms.RadioSelect(),
             'toppings': forms.CheckboxSelectMultiple(),
         }
@@ -13,7 +14,7 @@ class PizzaForm(forms.ModelForm):
 class BreadForm(forms.ModelForm):
     class Meta:
         model = Bread
-        fields = ('type',)
+        fields = ('flavor',)
         widgets = {
             'type': forms.RadioSelect(),
         }
