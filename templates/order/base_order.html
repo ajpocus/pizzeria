@@ -43,12 +43,13 @@
 			</span>
 			</p>
 		    {% endfor %}
+		    <p class="crust">{{ pizza.crust.name }} Crust</p>
 		</div>
 	    {% endfor %}
 	    {% for bread in order.breads.all %}
 		<div class="bread">
 		    <p class="item">
-		    <span class="type">{{ bread.type }} Bread</span>
+		    <span class="type">{{ bread.flavor.name }} Bread</span>
 		    <span class="price">
 			{{ bread.base_price|stringformat:".2f" }}
 		    </span>

@@ -1,8 +1,14 @@
 import decimal
+from decimal import Decimal
 from django.db import models
+
+quant = Decimal('0.01')
 
 class Flavor(models.Model):
     name = models.CharField(max_length=24)
+    base_price = models.DecimalField(max_digits=4,
+		    decimal_places=2,
+		    default=3.99)
 
     def __unicode__(self):
 	return self.name
@@ -26,30 +32,35 @@ class Topping(models.Model):
 	return self.name
 
 class Pizza(models.Model):
-    size = models.ForeignKey(Size)
-    toppings = models.ManyToManyField(Topping, blank=True)
-    crust = models.ForeignKey(Flavor)
+    size = models.ForeignKey(Size, null=True)
+    toppings = models.ManyToManyField(Topping, null=True)
+    crust = models.ForeignKey(Flavor, null=True)
     base_price = models.DecimalField(max_digits=4, 
 				    decimal_places=2, 
 				    default=5.00)
 
     def save(self, *args, **kwargs):
-	if self.size == 'S':
-	    self.base_price = Decimal('5.00')
-	elif self.size == 'M':
-	    self.base_price = Decimal('8.00')
-	elif self.size == 'L':
-	    self.base_price = Decimal('11.00')
-	elif self.size == 'XL':
-	    self.base_price = Decimal('14.00')
+	if not Pizza.objects.filter(id=self.id):
+	    super(Pizza, self).save(*args, **kwargs)
 	else:
-	    return ValueError, "Invalid size."
-	super(Pizza, self).save(*args, **kwargs)
+	    price = Decimal('0.00')
+	    if self.size:
+		price = self.size.base_price
+	    for topping in self.toppings.all():
+		if topping.base_price:
+		    price = price + topping.base_price
+
+	    self.base_price = decimal.Decimal(str(price)).quantize(quant)
+	    super(Pizza, self).save(*args, **kwargs)
 
     def __unicode__(self):
-	name = self.size + " Pizza"
+	if self.size.name:
+	    name = self.size.name + " Pizza"
+	else:
+	    name = "Pizza"
 	for topping in self.toppings.all():
-	    name = name + ", " + topping.name
+	    if topping.name:
+		name = name + ", " + topping.name
 	return name
 
 class Bread(models.Model):
@@ -57,6 +68,10 @@ class Bread(models.Model):
     base_price = models.DecimalField(max_digits=4,
 				    decimal_places=2,
 				    default=4.00)
+
+    def save(self, *args, **kwargs):
+	self.base_price = Decimal(self.flavor.base_price).quantize(quant)
+	super(Bread, self).save(*args, **kwargs)
 
     def __unicode__(self):
 	return self.type
@@ -89,7 +104,6 @@ class Order(models.Model):
 	    super(Order, self).save(*args, **kwargs)
 	else:
 	    decimal.getcontext().rounding = decimal.ROUND_HALF_EVEN
-	    Decimal = decimal.Decimal
 	    self.subtotal = Decimal('0.00')
 
 	    for pizza in self.pizzas.all():
@@ -102,9 +116,9 @@ class Order(models.Model):
 
 	    self.tax = Decimal('0.06') * self.subtotal
 	    self.total = self.subtotal + self.tax
-	    self.subtotal = self.subtotal.quantize(Decimal('0.01'))
-	    self.tax = self.tax.quantize(Decimal('0.01'))
-	    self.total = self.total.quantize(Decimal('0.01'))
+	    self.subtotal = self.subtotal.quantize(quant)
+	    self.tax = self.tax.quantize(quant)
+	    self.total = self.total.quantize(quant)
 	    super(Order, self).save(*args, **kwargs)
 
     def __unicode__(self):

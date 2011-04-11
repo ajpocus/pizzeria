@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'order',
     'line',
     'debug_toolbar',
+    'south',
 )
 
 DEBUG_TOOLBAR_CONFIG = {

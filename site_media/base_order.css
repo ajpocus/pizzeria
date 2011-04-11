@@ -23,7 +23,7 @@ body {
     -moz-border-radius: 5px;
 }
 
-#recipt .topping {
+#recipt .topping, .crust {
     position: relative;
     left: 1em;
 }
@@ -55,7 +55,7 @@ body {
 
 #menu {
     float: left;
-    width: 70%;
+    width: 50%;
     border: 2px solid blue;
     padding: 1em;
     margin: 1em;
